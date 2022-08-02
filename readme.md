@@ -1,6 +1,9 @@
-# LitElement tutorial starter
+# LitElement Project with redux, Api, examples
 
-This is the starting point for a tutorial series teaching you how to build an application with LitElement, Redux, Webpack, and Vaadin router.
+## Install
 
-You can find the text and video tutorials here:
-https://vaadin.com/tutorials/lit-element
+npm install
+
+## Run
+
+npm run dev

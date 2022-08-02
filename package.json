@@ -1,7 +1,7 @@
 {
-  "name": "pwa-conf-app",
+  "name": "app-lit-element",
   "version": "1.0.0",
-  "description": "This is a PWA tutorial app. You can find the tutorial on the [Vaadin website](https://vaadin.com/progressive-web-applications).",
+  "description": "App for learning Lit",
   "main": "sw.js",
   "scripts": {
     "webpack": "webpack",
@@ -12,15 +12,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vaadin-learning-center/lit-element-tutorial-00-starter.git"
+    "url": "https://github.com/Trabontea/lit-element-project"
   },
   "keywords": [],
-  "author": "Marcus Hellberg <marcus@vaadin.com>",
+  "author": "Daniel Botea",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/vaadin-learning-center/lit-element-tutorial-00-starter/issues"
+    "url": ""
   },
-  "homepage": "https://github.com/vaadin-learning-center/lit-element-tutorial-00-starter#readme",
+  "homepage": "",
   "devDependencies": {
     "@babel/core": "^7.1.5",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
