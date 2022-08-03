@@ -4,10 +4,17 @@ import '@vaadin/vaadin-button'
 import '@vaadin/vaadin-checkbox'
 import '@vaadin/vaadin-radio-button/vaadin-radio-button'
 import '@vaadin/vaadin-radio-button/vaadin-radio-group'
-import { VisibilityFilters } from '../redux/reducer.js'
 import { connect } from 'pwa-helpers'
 import { store } from '../redux/store.js'
 import { TodoStyles } from '../css/TodoStyles.js'
+import { VisibilityFilters, getVisibleTodosSelector } from '../redux/reducer.js'
+
+import {
+  addTodo,
+  updateTodoStatus,
+  updateFilter,
+  clearCompleted,
+} from '../redux/actions.js'
 
 // Connect the component to the Redux store
 export class TodoView extends connect(store)(LitElement) {
@@ -18,18 +25,11 @@ export class TodoView extends connect(store)(LitElement) {
     task: { type: String },
   }
 
+  // style
   static styles = TodoStyles
 
-  //Our state now comes from Redux, remove the constructor.
-  // constructor() {
-  //   super()
-  //   this.todos = []
-  //   this.filter = VisibilityFilters.SHOW_ALL
-  //   this.task = ''
-  // }
-
   stateChanged(state) {
-    this.todos = state.todos
+    this.todos = getVisibleTodosSelector(state)
     this.filter = state.filter
   }
 
@@ -38,7 +38,7 @@ export class TodoView extends connect(store)(LitElement) {
       <div class="input-layout" @keyup="${this.shortcutListener}">
         <vaadin-text-field
           placeholder="Task"
-          value="${this.task}"
+          value="${this.task || ''}"
           @change="${this.updateTask}"
         >
         </vaadin-text-field>
@@ -49,7 +49,7 @@ export class TodoView extends connect(store)(LitElement) {
 
       <div class="todos-list">
         <!-- Use the .map() operation to map each todo object to a lit-html template -->
-        ${this.applyFilter(this.todos).map(
+        ${this.todos.map(
           (todo) => html`
             <div class="todo-item">
               <vaadin-checkbox
@@ -85,13 +85,7 @@ export class TodoView extends connect(store)(LitElement) {
 
   addTodo() {
     if (this.task) {
-      this.todos = [
-        ...this.todos,
-        {
-          task: this.task,
-          complete: false,
-        },
-      ]
+      store.dispatch(addTodo(this.task))
       // Clear the task property
       this.task = ''
     }
@@ -111,31 +105,17 @@ export class TodoView extends connect(store)(LitElement) {
   }
 
   updateTodoStatus(updatedTodo, complete) {
-    this.todos = this.todos.map((todo) =>
-      updatedTodo === todo ? { ...updatedTodo, complete } : todo
-    )
+    store.dispatch(updateTodoStatus(updatedTodo, complete))
   }
 
   // Update the filter property based on the event value
   filterChanged(e) {
-    this.filter = e.target.value
+    store.dispatch(updateFilter(e.detail.value))
   }
 
   // Update the todos property to a new array only containing the non-completed todos.
   clearCompleted() {
-    this.todos = this.todos.filter((todo) => !todo.complete)
-  }
-
-  // Create a method that returns only the todos that pass the filter criteria.
-  applyFilter(todos) {
-    switch (this.filter) {
-      case VisibilityFilters.SHOW_ACTIVE:
-        return todos.filter((todo) => !todo.complete)
-      case VisibilityFilters.SHOW_COMPLETED:
-        return todos.filter((todo) => todo.complete)
-      default:
-        return todos
-    }
+    store.dispatch(clearCompleted())
   }
 }
 
