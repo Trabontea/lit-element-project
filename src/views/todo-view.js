@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit'
+import { html } from 'lit-element'
 import '@vaadin/vaadin-text-field'
 import '@vaadin/vaadin-button'
 import '@vaadin/vaadin-checkbox'
@@ -15,9 +15,10 @@ import {
   updateFilter,
   clearCompleted,
 } from '../redux/actions.js'
+import { BaseView } from './base-view.js'
 
 // Connect the component to the Redux store
-export class TodoView extends connect(store)(LitElement) {
+export class TodoView extends connect(store)(BaseView) {
   //static get properties() {return{}}
   static properties = {
     todos: { type: Array },
